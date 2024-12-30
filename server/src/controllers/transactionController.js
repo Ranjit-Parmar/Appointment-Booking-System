@@ -6,8 +6,8 @@ import Discount from "../models/discountSchema.js";
 
 // Generate financial reports for a patient
 export const generatePatientFinancialReport = asyncErrorHandler(async (req, res, next) => {
-  const { filter } = req.query;  // Optional filter parameter (e.g., 'monthly', 'yearly')
-  const patientId = req.params.patientId; // Get patient ID from params
+  const { filter } = req.query;  
+  const patientId = req.params.patientId; 
 
   // Get the current date
   const currentDate = new Date();
@@ -88,7 +88,7 @@ export const generatePatientFinancialReport = asyncErrorHandler(async (req, res,
         totalCredit: 1,
         totalDebit: 1,
         transactionCount: 1,
-        transactionDetails: 1,  // Include detailed transaction information
+        transactionDetails: 1,
       },
     },
   ];
@@ -191,11 +191,11 @@ export const generateDoctorFinancialReport = asyncErrorHandler(async (req, res, 
     },
     {
       $project: {
-        _id: 0, // Exclude the _id field
-        patientId: "$_id",  // Include patientId from the group
-        totalEarnings: 1,  // Total earnings (sum of credit transactions)
-        totalTransactions: 1,  // Total number of transactions
-        transactionDetails: 1,  // Include the details of each transaction (credit/debit)
+        _id: 0, 
+        patientId: "$_id",
+        totalEarnings: 1,
+        totalTransactions: 1,
+        transactionDetails: 1,
       },
     },
   ]);
@@ -213,6 +213,6 @@ export const generateDoctorFinancialReport = asyncErrorHandler(async (req, res, 
   res.status(200).json({
     success: true,
     discounts: totalDiscount,
-    report: report, // Send the generated report
+    report: report, 
   });
 });

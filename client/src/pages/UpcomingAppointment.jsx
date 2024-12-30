@@ -49,6 +49,8 @@ const UpcomingAppointment = () => {
   if(isError){
     toast.error('Something went wrong');
   }
+  console.log(data);
+  
 
   return isLoading ? <Spinner /> : (
     <div className="container mx-auto p-4">

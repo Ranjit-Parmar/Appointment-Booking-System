@@ -41,6 +41,19 @@ export const doctorApi = createApi({
         invalidatesTags: ["Doctor"],
         }),
 
+        // update doctor profile
+        updateDoctorProfile: builder.mutation({
+        query: (doctorProfileData) => ({
+            url: `updateProfile`,
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(doctorProfileData),
+        }),
+        invalidatesTags: ["Doctor"],
+        }),
+
         // update doctor availability
         updateDoctorAvailability: builder.mutation({
         query: (updateDoctorAvailabilityData) => ({
@@ -56,4 +69,4 @@ export const doctorApi = createApi({
     }),
     });
 
-export const { useGetAllDoctorsQuery, useGetSpecializationQuery, useGetDoctorDetailsQuery, useCreateDoctorProfileMutation, useUpdateDoctorAvailabilityMutation } = doctorApi;
+export const { useGetAllDoctorsQuery, useGetSpecializationQuery, useGetDoctorDetailsQuery, useCreateDoctorProfileMutation, useUpdateDoctorAvailabilityMutation, useUpdateDoctorProfileMutation } = doctorApi;

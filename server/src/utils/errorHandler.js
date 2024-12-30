@@ -7,7 +7,8 @@ export const errorHandler = (err, req, res, next) => {
   // Handle Mongoose Validation Errors
   if (err.name === 'ValidationError') {
     message = 'Validation Error';
-    statusCode = 400;  // Validation errors are typically 400 Bad Request
+    statusCode = 400;  
+    
     // Collect all validation error messages
     const validationErrors = Object.values(err.errors).map(error => error.message);
     message = validationErrors.join(', ');  // Combine all validation errors into a single message

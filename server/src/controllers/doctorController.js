@@ -47,6 +47,29 @@ export const createDoctorProfile = asyncErrorHandler(async (req, res, next) => {
 
 });
 
+
+
+// Update a doctor profile
+export const updateDoctorProfile = asyncErrorHandler(async (req, res, next) => {
+
+  
+  const { name, specialization, address, phone, consultationFee, doctorId} = req.body;
+  
+  // Validate input
+  if (!name || !specialization || !address || !phone || !consultationFee) {
+    return next(new CustomError('All fields are required.', 400));
+  }
+
+  // Create and save doctor profile
+  const doctor = await Doctor.findOneAndUpdate({doctorId}, { name, specialization, address, phone, consultationFee }, {new:true});
+  
+  res.status(201).json({
+    success: true,
+    message: 'Doctor profile updated successfully.',
+    doctor
+  });
+
+});
 // Get all doctors
 export const getAllDoctors = asyncErrorHandler(async (req, res, next) => {
   

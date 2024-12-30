@@ -21,7 +21,7 @@ const calculateDiscount = async (doctorId, patientId, consultationFee, discountP
       const discountUsage = new Discount({
         doctorId,
         discountAmount,
-        usedByPatientIds: [patientId], // Store patientId as an array for consistency
+        usedByPatientIds: [patientId],
       });
 
       await discountUsage.save();

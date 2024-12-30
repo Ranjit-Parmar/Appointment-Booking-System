@@ -12,7 +12,7 @@ const DoctorAvailability = () => {
   const { data, isLoading, isError, error } = useGetDoctorDetailsQuery(user?._id);
   const navigate = useNavigate();
 
-  // Use useEffect to handle side effects like navigation
+
   useEffect(() => {
     if (isError) {
       if (error?.status === 404) {
@@ -21,6 +21,7 @@ const DoctorAvailability = () => {
       }
     }
   }, [isError, error, navigate, user?._id]);
+
 
   // Get the current time formatted to HH:MM
   function getCurrentTime() {
@@ -42,6 +43,7 @@ const DoctorAvailability = () => {
 
   // Helper function to convert 12-hour time back to 24-hour format
   const convertTo24HourFormat = (time) => {
+    
     const [hourMinute, period] = time.split(' ');
     let [hours, minutes] = hourMinute.split(':');
     hours = parseInt(hours, 10);
@@ -50,9 +52,12 @@ const DoctorAvailability = () => {
     } else if (period === 'AM' && hours === 12) {
       hours = 0;
     }
+    let a = hours * 60 + minutes;
+    
     minutes = minutes.padStart(2, '0');
     return `${hours.toString().padStart(2, '0')}:${minutes}`;
   };
+
 
   // Set initial availability from the fetched data (if available)
   useEffect(() => {
@@ -62,6 +67,7 @@ const DoctorAvailability = () => {
       setAvailability(initialAvailability);
     }
   }, [data]);
+
 
   // Handle availability time slot change
   const handleAvailabilityChange = (e, index) => {
@@ -130,6 +136,7 @@ const DoctorAvailability = () => {
             <thead>
               <tr className="bg-gray-200">
                 <th className="py-2 px-4 text-left">Time Slot</th>
+                <th className="py-2 px-4 text-left">Status</th>
                 <th className="py-2 px-4 text-left">Actions</th>
               </tr>
             </thead>
@@ -145,6 +152,9 @@ const DoctorAvailability = () => {
                       min={currentTime} // Minimum time is current time
                       required
                     />
+                  </td>
+                  <td className={`py-2 px-4`}>   
+                      Valid   
                   </td>
                   <td className="py-2 px-4">
                     <button

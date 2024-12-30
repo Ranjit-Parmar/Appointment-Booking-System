@@ -15,10 +15,6 @@ const appointmentSchema = new mongoose.Schema(
     date: { 
       type: Date, 
       required: true, 
-      validate: {
-        validator: (value) => value >= new Date(), // Ensure appointment date is not in the past
-        message: 'Appointment date cannot be in the past',
-      },
     },  
     time: { 
       type: String, 
@@ -30,22 +26,19 @@ const appointmentSchema = new mongoose.Schema(
     },
     status: { 
       type: String, 
-      enum: ['scheduled', 'completed', 'cancelled'], 
+      enum: ['scheduled', 'completed'], 
       default: 'scheduled' 
     },
     consultationFee: { 
       type: Number,
       required: true, 
-    },
-    notes: { 
-      type: String 
-    },
+    }
   },
   { 
     timestamps: true, 
     // Adding indexes on commonly queried fields to improve performance
     indexes: [
-      { fields: { doctorId: 1, date: 1, time: 1 }, unique: true } // Ensures no double-booking at the same time
+      { fields: { doctorId: 1, date: 1, time: 1 }, unique: true }
     ] 
   }
 );
