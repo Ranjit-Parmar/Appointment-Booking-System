@@ -7,6 +7,8 @@ export const setAvailability = asyncErrorHandler(async (req, res, next) => {
  
     const { doctorId, available } = req.body;
 
+    console.log(available);
+    
     // Check if the doctor exists
     const doctor = await Doctor.findOne({doctorId});
     if (!doctor) {

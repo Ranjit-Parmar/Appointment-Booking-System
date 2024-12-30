@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getUser, userLogIn, userLogOut } from "../redux/reducer/authReducer";
+import Spinner from './Spinner';
 
 const Protected = ({ children }) => {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const Protected = ({ children }) => {
 
   // Show a loading indicator while checking authentication
   if (isLoading) {
-    return <div>Loading...</div>; // Optionally, replace with a loading spinner
+    return <Spinner/>; // Optionally, replace with a loading spinner
   }
 
   // If the user is not logged in, redirect to login page

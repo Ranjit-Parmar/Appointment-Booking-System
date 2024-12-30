@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDeleteAppointmentMutation, useGetAllDoctorAppointmentsQuery, useUpdateAppointmentStatusMutation } from '../redux/api/appointmentApi';
 import { useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
@@ -13,7 +13,7 @@ const UpcomingAppointment = () => {
   const [deleteAppointment] = useDeleteAppointmentMutation();
 
 
-  // Handle the status change (e.g., mark appointment as complete)
+  // Handle the status change 
   const handleStatusChange = async(appointmentId, status) => {
     try {
     const updatedAppointmentStatusResponse = await updateAppointmentStatus({appointmentId,status}).unwrap();
@@ -49,8 +49,6 @@ const UpcomingAppointment = () => {
   if(isError){
     toast.error('Something went wrong');
   }
-  console.log(data);
-  
 
   return isLoading ? <Spinner /> : (
     <div className="container mx-auto p-4">

@@ -12,17 +12,6 @@ const DoctorAvailability = () => {
   const { data, isLoading, isError, error } = useGetDoctorDetailsQuery(user?._id);
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-    if (isError) {
-      if (error?.status === 404) {
-        navigate(`/dashboard/set-profile/${user?._id}`); // Navigate to profile setup
-        toast.error('Please set up your profile first');
-      }
-    }
-  }, [isError, error, navigate, user?._id]);
-
-
   // Get the current time formatted to HH:MM
   function getCurrentTime() {
     const now = new Date();
@@ -43,7 +32,6 @@ const DoctorAvailability = () => {
 
   // Helper function to convert 12-hour time back to 24-hour format
   const convertTo24HourFormat = (time) => {
-    
     const [hourMinute, period] = time.split(' ');
     let [hours, minutes] = hourMinute.split(':');
     hours = parseInt(hours, 10);
@@ -52,22 +40,27 @@ const DoctorAvailability = () => {
     } else if (period === 'AM' && hours === 12) {
       hours = 0;
     }
-    let a = hours * 60 + minutes;
-    
     minutes = minutes.padStart(2, '0');
     return `${hours.toString().padStart(2, '0')}:${minutes}`;
   };
 
-
-  // Set initial availability from the fetched data (if available)
+  // Set initial availability from the fetched data 
   useEffect(() => {
     if (data && data?.doctor?.available) {
-      // Convert the 12-hour format data into the 24-hour format for input
       const initialAvailability = data.doctor.available.map((slot) => convertTo24HourFormat(slot.time));
       setAvailability(initialAvailability);
     }
   }, [data]);
 
+  // Error handling when the doctor profile is not found
+  useEffect(() => {
+    if (isError) {
+      if (error?.status === 404) {
+        navigate(`/dashboard/set-profile/${user?._id}`); 
+        toast.error('Please set up your profile first');
+      }
+    }
+  }, [isError, error, navigate, user?._id]);
 
   // Handle availability time slot change
   const handleAvailabilityChange = (e, index) => {
@@ -85,6 +78,14 @@ const DoctorAvailability = () => {
   const handleRemoveTimeSlot = (index) => {
     const updatedAvailability = availability.filter((_, i) => i !== index);
     setAvailability(updatedAvailability);
+  };
+
+  // Helper function to check if the time is expired
+  const isExpired = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const timeInMinutes = hours * 60 + minutes;
+    const currentInMinutes = parseInt(currentTime.split(':')[0], 10) * 60 + parseInt(currentTime.split(':')[1], 10);
+    return timeInMinutes < currentInMinutes;
   };
 
   // Handle form submission
@@ -141,32 +142,35 @@ const DoctorAvailability = () => {
               </tr>
             </thead>
             <tbody>
-              {availability.map((time, index) => (
-                <tr key={index} className="border-b">
-                  <td className="py-2 px-4">
-                    <input
-                      type="time"
-                      value={time}
-                      onChange={(e) => handleAvailabilityChange(e, index)}
-                      className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      min={currentTime} // Minimum time is current time
-                      required
-                    />
-                  </td>
-                  <td className={`py-2 px-4`}>   
-                      Valid   
-                  </td>
-                  <td className="py-2 px-4">
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTimeSlot(index)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {availability.map((time, index) => {
+                const expired = isExpired(time);
+                return (
+                  <tr key={index} className="border-b">
+                    <td className="py-2 px-4">
+                      <input
+                        type="time"
+                        value={time}
+                        onChange={(e) => handleAvailabilityChange(e, index)}
+                        className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        min={currentTime} // Minimum time is current time
+                        required
+                      />
+                    </td>
+                    <td className={`py-2 px-4 ${expired ? 'text-red-500' : 'text-green-500'}`}>
+                      {expired ? 'Expired' : 'Valid'}
+                    </td>
+                    <td className="py-2 px-4">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTimeSlot(index)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { getUser, userLogIn, userLogOut } from "../redux/reducer/authReducer";
 import { useEffect } from "react";
+import Spinner from "./Spinner";
 
 const ProtectedDoctorRoute = ({ children }) => {
 
@@ -46,7 +47,7 @@ const ProtectedDoctorRoute = ({ children }) => {
     }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Optionally, replace with a loading spinner
+    return <Spinner/>; // Optionally, replace with a loading spinner
   }
   
   if (!isLoggedIn) {

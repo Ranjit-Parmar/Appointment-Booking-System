@@ -41,7 +41,7 @@ const DoctorDashboard = () => {
 
         {/* Main Content Area */}
         <div className="flex-1 p-6">
-          <Outlet/>
+          <Outlet/>     
         </div>
       </div>
 

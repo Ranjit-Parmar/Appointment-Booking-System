@@ -45,6 +45,7 @@ const DoctorProfile = () => {
     e.preventDefault();
 
     try {
+      // if mode is create then create new profile else update existing profile 
         if(mode==='create'){
           let profileData = {
             name,
@@ -55,9 +56,10 @@ const DoctorProfile = () => {
             doctorId : id || user?._id
           };
           
+          // create profile
           const setDoctorProfileResponse = await createDoctorProfile(profileData).unwrap();
       
-          
+          // check response
          if(setDoctorProfileResponse?.success){
              toast.success(setDoctorProfileResponse?.message);
              navigate('/dashboard/set_update_availability');
@@ -72,16 +74,16 @@ const DoctorProfile = () => {
             doctorId : id || user?._id
           };
           
+          // update profile
           const updateDoctorProfileResponse = await updateDoctorProfile(profileData).unwrap();
       
-          
+          // check response
          if(updateDoctorProfileResponse?.success){
              toast.success(updateDoctorProfileResponse?.message);
              navigate('/dashboard/set_update_availability');
          }
         }
-        
-         
+             
 
     } catch (error) {
         toast.error('Something went wrong! Try again');
@@ -89,8 +91,6 @@ const DoctorProfile = () => {
 
   };
      
-  
-
  
   return (
     <div className="container mx-auto p-6 sm:p-8 md:p-10 bg-gray-50 rounded-lg shadow-lg">

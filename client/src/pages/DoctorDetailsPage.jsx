@@ -76,8 +76,7 @@ const DoctorDetailsPage = () => {
         time: selectedTime,
         consultationFee: 100,
       }).unwrap();
-      console.log(responseData);
-
+      
       toast.success(responseData.message);
       setDisableButton(false);
       navigate(`/appointments/${user?._id}`, { replace: true });
@@ -163,7 +162,7 @@ const DoctorDetailsPage = () => {
                         : "pointer-events-none"
                     } p-2 w-full text-sm ${
                       selectedTime === time
-                        ? "bg-blue-900 text-white"
+                        ? "bg-blue-500 text-white"
                         : "bg-gray-200 hover:bg-green-600"
                     }`}
                     onClick={() => {
